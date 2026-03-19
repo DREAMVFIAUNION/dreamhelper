@@ -1,0 +1,64 @@
+SENTRY_DSN not set, Sentry disabled
+🚀 brain-core v3.4.0 starting in development mode
+  ✓ Registered 16 tools: ['calculator', 'datetime', 'web_search', 'web_fetch', 'code_exec', 'run_workflow', 'weather', 'stock', 'crypto', 'news', 'shell_exec', 'file_read', 'file_write', 'file_edit', 'file_search', 'code_grep']
+  📄 Indexed document 'DREAMVFIA 组织概况与创始人' → 6 chunks (mode=memory)
+  📄 Indexed document 'RNOISE RECORDS 音乐厂牌与艺术家' → 6 chunks (mode=memory)
+  📄 Indexed document 'DREAMVFIA 官方社交媒体账号' → 8 chunks (mode=memory)
+  📄 Indexed document '梦帮小助商业模式与价值阶梯' → 8 chunks (mode=memory)
+  📄 Indexed document '梦帮小助竞品认知与差异化定位' → 6 chunks (mode=memory)
+  📄 Indexed document '梦帮小助产品介绍与使用指南' → 5 chunks (mode=memory)
+  📄 Indexed document 'DREAMVFIA 信息安全红线' → 4 chunks (mode=memory)
+  ✓ Knowledge base seeded: 7 docs, 43 chunks, 594 vocab
+No user documents in DB to sync
+  ⏰ Registered task: 空闲用户问候 (interval)
+  ⏰ Registered task: 早间简报 (cron)
+  ⏰ Registered task: 晚间关怀 (cron)
+  ⚠ Audio skills skipped (pydub/audioop not available on this Python version)
+  ✓ Registered 90 skills: {'daily': 15, 'office': 15, 'coding': 15, 'document': 13, 'entertainment': 12, 'video': 8, 'image': 12}
+  ✓ Bridged 90 skills → ToolRegistry via run_skill dispatch tool
+  ✓ Workflow nodes registered: 16 types
+[MemoryManager] Warmed up 0 users with 0 facts
+  ✓ Scheduler started with 3 tasks
+  🧠 仿生大脑: enabled
+     丘脑=MiniMax-M2.5-highspeed | 脑干=MiniMax-M2.5-highspeed
+     左脑=glm-4.7 | 右脑=qwen3-235b-a22b
+     小脑=moonshotai/kimi-k2.5 | 前额叶=glm-4.7
+     视觉皮层=nvidia/nemotron-nano-12b-v2-vl | 海马体=OFF
+[ConsciousnessConfig] loaded: enabled=True, model=nvidia/nemotron-3-nano-30b-a3b, interval=900s
+[ConsciousnessDB] PostgreSQL tables ensured
+[SelfModel] Loaded from DB (conversations=0)
+[SelfModel] Loaded 45 opinions
+[GoalSystem] Loaded 5 goals from DB
+  ⏰ Registered task: 意识核·内心独白 (interval) [auto-started]
+  ⏰ Registered task: 意识核·世界观察 (interval) [auto-started]
+  ⏰ Registered task: 意识核·情感保存 (interval) [auto-started]
+[Consciousness] Registered 3 scheduler tasks
+[WorldModel] Observing the world...
+[InnerVoice] Starting inner dialogue #1 (model=nvidia/nemotron-3-nano-30b-a3b)...
+LLM providers: ['minimax', 'qwen', 'glm', 'nvidia']
+[WorldModel] Observing the world...
+[InnerVoice] Opinion seed: 多模态AI → 它将推动AI从文本模态向真正的多感知理解迈进。
+[InnerVoice] Opinion seed: AI伦理 → 我们需要更透明的模型解释机制，否则信任难以建立。
+[InnerVoice] Expression skipped: no known users to express to
+[InnerVoice] Dialogue #1: 1 thoughts, 1 expressed, mood: 平静满足 😊
+[WorldModel] World observation complete
+[WorldModel] World observation complete
+🧠 意识核启动完成 — model=nvidia/nemotron-3-nano-30b-a3b, interval=900s, 心情: 平静满足 😊, 目标: 5, 想法: 1
+  🔌 MCP: 正在启动 4 个服务器...
+MCP [sequential-thinking] 已连接, 1 个工具: ['sequentialthinking']
+  ✓ MCP [sequential-thinking] connected: 1 tools ['sequentialthinking']
+MCP [filesystem] 已连接, 14 个工具: ['read_file', 'read_text_file', 'read_media_file', 'read_multiple_files', 'write_file', 'edit_file', 'create_directory', 'list_directory', 'list_directory_with_sizes', 'directory_tree', 'move_file', 'search_files', 'get_file_info', 'list_allowed_directories']
+  ✓ MCP [filesystem] connected: 14 tools ['read_file', 'read_text_file', 'read_media_file', 'read_multiple_files', 'write_file', 'edit_file', 'create_directory', 'list_directory', 'list_directory_with_sizes', 'directory_tree', 'move_file', 'search_files', 'get_file_info', 'list_allowed_directories']
+MCP [memory-graph] 已连接, 9 个工具: ['create_entities', 'create_relations', 'add_observations', 'delete_entities', 'delete_observations', 'delete_relations', 'read_graph', 'search_nodes', 'open_nodes']
+  ✓ MCP [memory-graph] connected: 9 tools ['create_entities', 'create_relations', 'add_observations', 'delete_entities', 'delete_observations', 'delete_relations', 'read_graph', 'search_nodes', 'open_nodes']
+MCP [windows] 已连接, 12 个工具: ['App', 'Shell', 'Snapshot', 'Click', 'Type', 'Scroll', 'Move', 'Shortcut', 'Wait', 'Scrape', 'MultiSelect', 'MultiEdit']
+  ✓ MCP [windows] connected: 12 tools ['App', 'Shell', 'Snapshot', 'Click', 'Type', 'Scroll', 'Move', 'Shortcut', 'Wait', 'Scrape', 'MultiSelect', 'MultiEdit']
+  ✓ MCP: 4/4 服务器已连接, 36 个工具
+  ✓ MCP bridge registered: mcp_call → 36 external tools
+[Consciousness] State saved on shutdown
+MCP [sequential-thinking] 正在关闭...
+MCP [filesystem] 正在关闭...      
+MCP [memory-graph] 正在关闭...    
+MCP [windows] 正在关闭...         
+  ✓ MCP connections closed
+  ✓ Scheduler stopped

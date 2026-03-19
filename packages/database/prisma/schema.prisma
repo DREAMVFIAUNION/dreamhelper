@@ -1,0 +1,371 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ═══════════════════════════════════════════════════════════
+// 用户与组织
+// ═══════════════════════════════════════════════════════════
+
+model User {
+  id              String   @id @default(uuid()) @db.Uuid
+  email           String   @unique @db.VarChar(255)
+  username        String   @unique @db.VarChar(50)
+  displayName     String?  @map("display_name") @db.VarChar(100)
+  avatarUrl       String?  @map("avatar_url") @db.VarChar(500)
+  passwordHash    String   @map("password_hash") @db.VarChar(255)
+  status          String   @default("active") @db.VarChar(20)
+  tierLevel       Int      @default(0) @map("tier_level")
+  emailVerified   Boolean  @default(false) @map("email_verified")
+  twoFactorEnabled Boolean @default(false) @map("two_factor_enabled")
+  lastLoginAt     DateTime? @map("last_login_at")
+  metadata        Json     @default("{}")
+  settings        Json     @default("{\"theme\": \"dark\", \"language\": \"zh-CN\"}")
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
+
+  agents          Agent[]
+  sessions        ChatSession[]
+  orgMemberships  OrganizationMember[]
+  knowledgeBases  KnowledgeBase[]
+  workflows       Workflow[]
+
+  @@map("users")
+}
+
+model Organization {
+  id          String   @id @default(uuid()) @db.Uuid
+  name        String   @db.VarChar(100)
+  slug        String   @unique @db.VarChar(50)
+  description String?  @db.Text
+  logoUrl     String?  @map("logo_url") @db.VarChar(500)
+  ownerId     String   @map("owner_id") @db.Uuid
+  plan        String   @default("free") @db.VarChar(20)
+  settings    Json     @default("{}")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  members     OrganizationMember[]
+  agents      Agent[]
+
+  @@map("organizations")
+}
+
+model OrganizationMember {
+  id             String   @id @default(uuid()) @db.Uuid
+  organizationId String   @map("organization_id") @db.Uuid
+  userId         String   @map("user_id") @db.Uuid
+  role           String   @default("member") @db.VarChar(50)
+  permissions    Json     @default("[]")
+  joinedAt       DateTime @default(now()) @map("joined_at")
+
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([organizationId, userId])
+  @@map("organization_members")
+}
+
+// ═══════════════════════════════════════════════════════════
+// 智能体
+// ═══════════════════════════════════════════════════════════
+
+model Agent {
+  id              String   @id @default(uuid()) @db.Uuid
+  organizationId  String?  @map("organization_id") @db.Uuid
+  ownerId         String   @map("owner_id") @db.Uuid
+  name            String   @db.VarChar(100)
+  description     String?  @db.Text
+  avatarUrl       String?  @map("avatar_url") @db.VarChar(500)
+  type            String   @default("custom") @db.VarChar(50)
+  systemPrompt    String   @default("") @map("system_prompt") @db.Text
+  modelProvider   String   @default("minimax") @map("model_provider") @db.VarChar(50)
+  modelName       String   @default("abab6.5s-chat") @map("model_name") @db.VarChar(100)
+  temperature     Float    @default(0.7)
+  maxTokens       Int      @default(4096) @map("max_tokens")
+  capabilities    Json     @default("[\"chat\", \"completion\"]")
+  tools           Json     @default("[]")
+  status          String   @default("active") @db.VarChar(20)
+  isPublic        Boolean  @default(false) @map("is_public")
+  usageCount      Int      @default(0) @map("usage_count")
+  metadata        Json     @default("{}")
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
+
+  owner           User          @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  organization    Organization? @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  sessions        ChatSession[]
+
+  @@map("agents")
+}
+
+// ═══════════════════════════════════════════════════════════
+// 对话
+// ═══════════════════════════════════════════════════════════
+
+model ChatSession {
+  id        String   @id @default(uuid()) @db.Uuid
+  userId    String   @map("user_id") @db.Uuid
+  agentId   String?  @map("agent_id") @db.Uuid
+  title     String?  @db.VarChar(200)
+  status    String   @default("active") @db.VarChar(20)
+  metadata  Json     @default("{}")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  agent     Agent?    @relation(fields: [agentId], references: [id], onDelete: Cascade)
+  messages  Message[]
+
+  @@map("chat_sessions")
+}
+
+model Message {
+  id        String   @id @default(uuid()) @db.Uuid
+  sessionId String   @map("session_id") @db.Uuid
+  role      String   @db.VarChar(20)
+  content   String   @db.Text
+  thinking  Json?
+  toolCalls Json?    @map("tool_calls")
+  tokens    Int?
+  latencyMs Int?     @map("latency_ms")
+  metadata  Json     @default("{}")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  session   ChatSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+
+  @@index([sessionId, createdAt])
+  @@map("messages")
+}
+
+// ═══════════════════════════════════════════════════════════
+// 知识库
+// ═══════════════════════════════════════════════════════════
+
+model KnowledgeBase {
+  id          String   @id @default(uuid()) @db.Uuid
+  name        String   @db.VarChar(100)
+  description String?  @db.Text
+  type        String   @default("general") @db.VarChar(50)
+  status      String   @default("active") @db.VarChar(20)
+  ownerId     String?  @map("owner_id") @db.Uuid
+  docCount    Int      @default(0) @map("doc_count")
+  metadata    Json     @default("{}")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  owner       User?      @relation(fields: [ownerId], references: [id])
+  documents   Document[]
+
+  @@index([ownerId])
+  @@map("knowledge_bases")
+}
+
+model Document {
+  id              String   @id @default(uuid()) @db.Uuid
+  knowledgeBaseId String   @map("knowledge_base_id") @db.Uuid
+  title           String   @db.VarChar(500)
+  content         String?  @db.Text
+  docType         String   @default("text") @map("doc_type") @db.VarChar(50)
+  contentHash     String   @default("") @map("content_hash") @db.VarChar(64)
+  fileUrl         String?  @map("file_url") @db.VarChar(500)
+  fileType        String?  @map("file_type") @db.VarChar(50)
+  fileSize        Int?     @map("file_size")
+  chunkCount      Int      @default(0) @map("chunk_count")
+  status          String   @default("pending") @db.VarChar(20)
+  metadata        Json     @default("{}")
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
+
+  knowledgeBase   KnowledgeBase @relation(fields: [knowledgeBaseId], references: [id], onDelete: Cascade)
+
+  @@map("documents")
+}
+
+// ═══════════════════════════════════════════════════════════
+// 管理后台
+// ═══════════════════════════════════════════════════════════
+
+model AdminUser {
+  id            String   @id @default(uuid()) @db.Uuid
+  email         String   @unique @db.VarChar(255)
+  passwordHash  String   @map("password_hash") @db.VarChar(255)
+  displayName   String?  @map("display_name") @db.VarChar(100)
+  role          String   @default("admin") @db.VarChar(50)
+  status        String   @default("active") @db.VarChar(20)
+  lastLoginAt   DateTime? @map("last_login_at")
+  metadata      Json     @default("{}")
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @updatedAt @map("updated_at")
+
+  auditLogs     AuditLog[]
+
+  @@map("admin_users")
+}
+
+model AuditLog {
+  id          String   @id @default(uuid()) @db.Uuid
+  adminId     String?  @map("admin_id") @db.Uuid
+  action      String   @db.VarChar(100)
+  targetType  String?  @map("target_type") @db.VarChar(50)
+  targetId    String?  @map("target_id") @db.VarChar(100)
+  details     Json     @default("{}")
+  ip          String?  @db.VarChar(45)
+  userAgent   String?  @map("user_agent") @db.VarChar(500)
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  admin       AdminUser? @relation(fields: [adminId], references: [id], onDelete: SetNull)
+
+  @@index([adminId])
+  @@index([action])
+  @@index([createdAt])
+  @@map("audit_logs")
+}
+
+model SystemConfig {
+  id          String   @id @default(uuid()) @db.Uuid
+  key         String   @unique @db.VarChar(100)
+  value       String   @db.Text
+  description String?  @db.VarChar(500)
+  updatedBy   String?  @map("updated_by") @db.Uuid
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  @@map("system_configs")
+}
+
+model DailyStats {
+  id            String   @id @default(uuid()) @db.Uuid
+  date          DateTime @unique @db.Date
+  activeUsers   Int      @default(0) @map("active_users")
+  newUsers      Int      @default(0) @map("new_users")
+  totalSessions Int      @default(0) @map("total_sessions")
+  totalMessages Int      @default(0) @map("total_messages")
+  totalTokens   Int      @default(0) @map("total_tokens")
+  avgLatencyMs  Int      @default(0) @map("avg_latency_ms")
+  metadata      Json     @default("{}")
+  createdAt     DateTime @default(now()) @map("created_at")
+
+  @@index([date])
+  @@map("daily_stats")
+}
+
+// ═══════════════════════════════════════════════════════════
+// 工作流引擎（原生，非外部 n8n）
+// 架构定位: 工作流 = 执行层（肌肉），由双脑（大脑）调度
+// ═══════════════════════════════════════════════════════════
+
+model Workflow {
+  id              String   @id @default(uuid()) @db.Uuid
+  ownerId         String   @map("owner_id") @db.Uuid
+  name            String   @db.VarChar(200)
+  description     String?  @db.Text
+  status          String   @default("draft") @db.VarChar(20)  // draft | active | paused | archived
+  triggerType     String   @default("manual") @map("trigger_type") @db.VarChar(30) // manual | cron | webhook | event
+  triggerConfig   Json     @default("{}") @map("trigger_config")
+  nodes           Json     @default("[]")    // WorkflowNode[] 节点定义
+  connections     Json     @default("[]")    // WorkflowConnection[] 连线定义
+  viewport        Json     @default("{}") // React Flow viewport (x, y, zoom)
+  variables       Json     @default("{}") // 工作流级变量
+  tags            Json     @default("[]")
+  runCount        Int      @default(0) @map("run_count")
+  lastRunAt       DateTime? @map("last_run_at")
+  lastRunStatus   String?  @map("last_run_status") @db.VarChar(20)
+  metadata        Json     @default("{}")
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
+
+  owner           User @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  executions      WorkflowExecution[]
+
+  @@index([ownerId])
+  @@index([status])
+  @@map("workflows")
+}
+
+model WorkflowExecution {
+  id            String    @id @default(uuid()) @db.Uuid
+  workflowId    String    @map("workflow_id") @db.Uuid
+  status        String    @default("pending") @db.VarChar(20)  // pending | running | success | failed | cancelled
+  triggerType   String    @default("manual") @map("trigger_type") @db.VarChar(30)
+  triggerData   Json      @default("{}") @map("trigger_data")
+  error         String?   @db.Text
+  totalNodes    Int       @default(0) @map("total_nodes")
+  completedNodes Int      @default(0) @map("completed_nodes")
+  totalTokens   Int       @default(0) @map("total_tokens")
+  totalLatencyMs Int      @default(0) @map("total_latency_ms")
+  metadata      Json      @default("{}")
+  startedAt     DateTime  @default(now()) @map("started_at")
+  finishedAt    DateTime? @map("finished_at")
+
+  workflow      Workflow @relation(fields: [workflowId], references: [id], onDelete: Cascade)
+  steps         WorkflowStep[]
+
+  @@index([workflowId, startedAt])
+  @@index([status])
+  @@map("workflow_executions")
+}
+
+model WorkflowStep {
+  id            String    @id @default(uuid()) @db.Uuid
+  executionId   String    @map("execution_id") @db.Uuid
+  nodeId        String    @map("node_id") @db.VarChar(100)  // React Flow node id
+  nodeName      String    @map("node_name") @db.VarChar(200)
+  nodeType      String    @map("node_type") @db.VarChar(50) // llm | skill | agent | http | condition | transform | code | delay | notification
+  status        String    @default("pending") @db.VarChar(20)  // pending | running | success | failed | skipped
+  inputData     Json      @default("{}") @map("input_data")
+  outputData    Json      @default("{}") @map("output_data")
+  error         String?   @db.Text
+  tokens        Int       @default(0)
+  latencyMs     Int       @default(0) @map("latency_ms")
+  startedAt     DateTime? @map("started_at")
+  finishedAt    DateTime? @map("finished_at")
+
+  execution     WorkflowExecution @relation(fields: [executionId], references: [id], onDelete: Cascade)
+
+  @@index([executionId, nodeId])
+  @@map("workflow_steps")
+}
+
+// ═══════════════════════════════════════════════════════════
+// 记忆系统 — 长期用户事实记忆
+// ═══════════════════════════════════════════════════════════
+
+model UserMemory {
+  id          String   @id @default(uuid()) @db.Uuid
+  userId      String   @map("user_id") @db.Uuid
+  key         String   @db.VarChar(100)   // e.g. "name", "occupation", "preference_language"
+  value       String   @db.Text
+  confidence  Float    @default(1.0)
+  source      String?  @db.VarChar(200)   // source session id or channel
+  metadata    Json     @default("{}")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  @@unique([userId, key])
+  @@index([userId])
+  @@map("user_memories")
+}
+
+// ═══════════════════════════════════════════════════════════
+// 渠道用户映射
+// ═══════════════════════════════════════════════════════════
+
+model ChannelUserMapping {
+  id            String   @id @default(uuid()) @db.Uuid
+  channel       String   @db.VarChar(30)    // "wechat" | "wecom" | "telegram" | ...
+  channelUserId String   @map("channel_user_id") @db.VarChar(200)
+  userId        String   @map("user_id") @db.Uuid
+  displayName   String?  @map("display_name") @db.VarChar(100)
+  metadata      Json     @default("{}")
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @updatedAt @map("updated_at")
+
+  @@unique([channel, channelUserId])
+  @@index([userId])
+  @@map("channel_user_mappings")
+}

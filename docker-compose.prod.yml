@@ -1,0 +1,256 @@
+# ═══════════════════════════════════════════════════════════
+# 梦帮小助 v3.3 · 生产环境部署
+# ═══════════════════════════════════════════════════════════
+
+services:
+  nginx:
+    image: nginx:1.25-alpine
+    container_name: dreamhelp-nginx
+    ports:
+      - '80:80'
+      - '443:443'
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      # - ./nginx/certs:/etc/nginx/certs:ro  # HTTPS 证书
+    depends_on:
+      web-portal:
+        condition: service_started
+      brain-core:
+        condition: service_healthy
+      gateway:
+        condition: service_started
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 256M
+
+  postgres:
+    image: postgres:17-alpine
+    container_name: dreamhelp-postgres
+    ports:
+      - '5432:5432'
+    environment:
+      POSTGRES_DB: dreamhelp
+      POSTGRES_USER: ${DB_USER:-dreamhelp}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:?DB_PASSWORD is required}
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U ${DB_USER:-dreamhelp}']
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: '2'
+          memory: 4G
+
+  redis:
+    image: redis:8-alpine
+    container_name: dreamhelp-redis
+    ports:
+      - '6379:6379'
+    command: redis-server --maxmemory 512mb --maxmemory-policy allkeys-lru --requirepass ${REDIS_PASSWORD:?REDIS_PASSWORD is required}
+    healthcheck:
+      test: ['CMD', 'redis-cli', 'ping']
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 1G
+
+  milvus:
+    image: milvusdb/milvus:v2.4-latest
+    container_name: dreamhelp-milvus
+    ports:
+      - '19530:19530'
+      - '9091:9091'
+    environment:
+      ETCD_USE_EMBED: 'true'
+      COMMON_STORAGETYPE: local
+    volumes:
+      - milvus_data:/var/lib/milvus
+    healthcheck:
+      test: ['CMD', 'curl', '-f', 'http://localhost:9091/healthz']
+      interval: 10s
+      timeout: 10s
+      retries: 5
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: '2'
+          memory: 4G
+
+  elasticsearch:
+    image: elasticsearch:8.15.0
+    container_name: dreamhelp-es
+    ports:
+      - '9200:9200'
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=true
+      - ELASTIC_PASSWORD=${ELASTIC_PASSWORD:-changeme}
+      - 'ES_JAVA_OPTS=-Xms1g -Xmx1g'
+    volumes:
+      - es_data:/usr/share/elasticsearch/data
+    healthcheck:
+      test: ['CMD-SHELL', 'curl -f http://localhost:9200/_cluster/health || exit 1']
+      interval: 10s
+      timeout: 10s
+      retries: 5
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: '2'
+          memory: 4G
+
+  minio:
+    image: minio/minio:latest
+    container_name: dreamhelp-minio
+    ports:
+      - '9000:9000'
+      - '9001:9001'
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: ${MINIO_USER:-minioadmin}
+      MINIO_ROOT_PASSWORD: ${MINIO_PASSWORD:?MINIO_PASSWORD is required}
+    volumes:
+      - minio_data:/data
+    healthcheck:
+      test: ['CMD', 'mc', 'ready', 'local']
+      interval: 10s
+      timeout: 10s
+      retries: 5
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 1G
+
+  # ─── 应用服务 ───────────────────────────────────────────
+  web-portal:
+    build:
+      context: .
+      dockerfile: apps/web-portal/Dockerfile
+    container_name: dreamhelp-web
+    environment:
+      DATABASE_URL: postgresql://${DB_USER:-dreamhelp}:${DB_PASSWORD}@postgres:5432/dreamhelp
+      JWT_SECRET: ${JWT_SECRET:?JWT_SECRET is required}
+      ENCRYPTION_KEY: ${ENCRYPTION_KEY:-}
+      BRAIN_CORE_URL: http://brain-core:8000
+      BRAIN_API_KEY: ${BRAIN_API_KEY:-}
+      NODE_ENV: production
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    restart: unless-stopped
+    healthcheck:
+      test: ['CMD', 'curl', '-f', 'http://localhost:3000/api/health']
+      interval: 15s
+      timeout: 10s
+      retries: 3
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 1G
+
+  gateway:
+    build:
+      context: .
+      dockerfile: services/gateway/Dockerfile
+    container_name: dreamhelp-gateway
+    environment:
+      PORT: '3001'
+      DATABASE_URL: postgresql://${DB_USER:-dreamhelp}:${DB_PASSWORD}@postgres:5432/dreamhelp
+      REDIS_URL: redis://redis:6379
+      BRAIN_CORE_URL: http://brain-core:8000
+      JWT_SECRET: ${JWT_SECRET:?JWT_SECRET is required}
+      ALLOWED_ORIGINS: ${ALLOWED_ORIGINS:-https://app.dreamvfia.com}
+      NODE_ENV: production
+      # 多渠道配置 (Phase 6)
+      TELEGRAM_BOT_TOKEN: ${TELEGRAM_BOT_TOKEN:-}
+      TELEGRAM_WEBHOOK_SECRET: ${TELEGRAM_WEBHOOK_SECRET:-}
+      WECHAT_APP_ID: ${WECHAT_APP_ID:-}
+      WECHAT_APP_SECRET: ${WECHAT_APP_SECRET:-}
+      WECHAT_TOKEN: ${WECHAT_TOKEN:-}
+      WECOM_CORP_ID: ${WECOM_CORP_ID:-}
+      WECOM_SECRET: ${WECOM_SECRET:-}
+      WECOM_AGENT_ID: ${WECOM_AGENT_ID:-}
+      WECOM_TOKEN: ${WECOM_TOKEN:-}
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 2G
+
+  brain-core:
+    build:
+      context: services/brain-core
+      dockerfile: Dockerfile
+    container_name: dreamhelp-brain
+    environment:
+      ENV: production
+      DATABASE_URL: postgresql://${DB_USER:-dreamhelp}:${DB_PASSWORD}@postgres:5432/dreamhelp
+      REDIS_URL: redis://redis:6379
+      MILVUS_HOST: milvus
+      MILVUS_PORT: '19530'
+      ELASTICSEARCH_URL: http://elasticsearch:9200
+      MINIMAX_API_KEY: ${MINIMAX_API_KEY:?MINIMAX_API_KEY is required}
+      MINIMAX_GROUP_ID: ${MINIMAX_GROUP_ID:-}
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+      DEEPSEEK_API_KEY: ${DEEPSEEK_API_KEY:-}
+      QWEN_API_KEY: ${QWEN_API_KEY:-}
+      QWEN_BASE_URL: ${QWEN_BASE_URL:-https://dashscope.aliyuncs.com/compatible-mode/v1}
+      JWT_SECRET: ${JWT_SECRET:?JWT_SECRET is required}
+      ALLOWED_ORIGINS: ${ALLOWED_ORIGINS:-https://app.dreamvfia.com}
+      RAG_MODE: ${RAG_MODE:-memory}
+      EMBEDDING_PROVIDER: ${EMBEDDING_PROVIDER:-minimax}
+      BRAIN_API_KEY: ${BRAIN_API_KEY:?BRAIN_API_KEY is required}
+      WEBHOOK_SECRET: ${WEBHOOK_SECRET:-}
+      ENCRYPTION_KEY: ${ENCRYPTION_KEY:-}
+      DUAL_BRAIN_ENABLED: ${DUAL_BRAIN_ENABLED:-true}
+      DUAL_BRAIN_LEFT_MODEL: ${DUAL_BRAIN_LEFT_MODEL:-MiniMax-M2.5-highspeed}
+      DUAL_BRAIN_RIGHT_MODEL: ${DUAL_BRAIN_RIGHT_MODEL:-qwen3-235b-a22b}
+      DUAL_BRAIN_FUSION_MODEL: ${DUAL_BRAIN_FUSION_MODEL:-qwen-plus}
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ['CMD', 'curl', '-f', 'http://localhost:8000/health']
+      interval: 15s
+      timeout: 10s
+      retries: 3
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: '2'
+          memory: 4G
+
+volumes:
+  pg_data:
+  milvus_data:
+  es_data:
+  minio_data:

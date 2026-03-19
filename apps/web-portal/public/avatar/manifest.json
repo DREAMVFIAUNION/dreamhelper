@@ -1,0 +1,10 @@
+{
+  "name": "梦帮小助虚拟形象",
+  "version": "1.0.0",
+  "sprites": {
+    "idle": { "file": "idle.webp", "label": "待机", "source": "16bit 全身.png" },
+    "thinking": { "file": "thinking.webp", "label": "思考", "source": "16bit 严肃.png" },
+    "listening": { "file": "listening.webp", "label": "聆听", "source": "16bit 仰视.png" },
+    "greeting": { "file": "greeting.webp", "label": "招手", "source": "16bit 招手.png" }
+  }
+}

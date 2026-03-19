@@ -1,0 +1,94 @@
+Sequential Thinking MCP Server running on stdio
+Secure MCP Filesystem Server running on stdio
+Client does not support MCP Roots, using allowed directories set from server args: [ 'C:\\tmp\\dreamhelp' ]
+Knowledge Graph MCP Server running on stdio
+[02/28/26 17:56:09] INFO     Starting MCP server 'windows-mcp'   server.py:2504
+                             with transport 'stdio'                            
+ERROR:    [Errno 10048] error while attempting to bind on address ('0.0.0.0', 8100): [winerror 10048] 閫氬父姣忎釜濂楁帴瀛楀湴鍧€(鍗忚/缃戠粶鍦板潃/绔彛)鍙厑璁镐娇鐢ㄤ竴娆°€?
+ERROR:    Traceback (most recent call last):
+  File "d:\DREAMVFIA Assistant\.venv\Lib\site-packages\starlette\routing.py", line 694, in lifespan
+    async with self.lifespan_context(app) as maybe_state:
+               ~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "C:\Users\dream\AppData\Local\Python\pythoncore-3.14-64\Lib\contextlib.py", line 221, in __aexit__
+    await anext(self.gen)
+  File "d:\DREAMVFIA Assistant\.venv\Lib\site-packages\fastapi\routing.py", line 201, in merged_lifespan
+    async with original_context(app) as maybe_original_state:
+               ~~~~~~~~~~~~~~~~^^^^^
+  File "C:\Users\dream\AppData\Local\Python\pythoncore-3.14-64\Lib\contextlib.py", line 221, in __aexit__
+    await anext(self.gen)
+  File "d:\DREAMVFIA Assistant\.venv\Lib\site-packages\fastapi\routing.py", line 201, in merged_lifespan
+    async with original_context(app) as maybe_original_state:
+               ~~~~~~~~~~~~~~~~^^^^^
+  File "C:\Users\dream\AppData\Local\Python\pythoncore-3.14-64\Lib\contextlib.py", line 221, in __aexit__
+    await anext(self.gen)
+  File "d:\DREAMVFIA Assistant\.venv\Lib\site-packages\fastapi\routing.py", line 201, in merged_lifespan
+    async with original_context(app) as maybe_original_state:
+               ~~~~~~~~~~~~~~~~^^^^^
+  File "C:\Users\dream\AppData\Local\Python\pythoncore-3.14-64\Lib\contextlib.py", line 221, in __aexit__
+    await anext(self.gen)
+  File "d:\DREAMVFIA Assistant\.venv\Lib\site-packages\fastapi\routing.py", line 201, in merged_lifespan
+    async with original_context(app) as maybe_original_state:
+               ~~~~~~~~~~~~~~~~^^^^^
+  File "C:\Users\dream\AppData\Local\Python\pythoncore-3.14-64\Lib\contextlib.py", line 221, in __aexit__
+    await anext(self.gen)
+  File "d:\DREAMVFIA Assistant\.venv\Lib\site-packages\fastapi\routing.py", line 201, in merged_lifespan
+    async with original_context(app) as maybe_original_state:
+               ~~~~~~~~~~~~~~~~^^^^^
+  File "C:\Users\dream\AppData\Local\Python\pythoncore-3.14-64\Lib\contextlib.py", line 221, in __aexit__
+    await anext(self.gen)
+  File "d:\DREAMVFIA Assistant\.venv\Lib\site-packages\fastapi\routing.py", line 201, in merged_lifespan
+    async with original_context(app) as maybe_original_state:
+               ~~~~~~~~~~~~~~~~^^^^^
+  File "C:\Users\dream\AppData\Local\Python\pythoncore-3.14-64\Lib\contextlib.py", line 221, in __aexit__
+    await anext(self.gen)
+  File "d:\DREAMVFIA Assistant\.venv\Lib\site-packages\fastapi\routing.py", line 201, in merged_lifespan
+    async with original_context(app) as maybe_original_state:
+               ~~~~~~~~~~~~~~~~^^^^^
+  File "C:\Users\dream\AppData\Local\Python\pythoncore-3.14-64\Lib\contextlib.py", line 221, in __aexit__
+    await anext(self.gen)
+  File "d:\DREAMVFIA Assistant\.venv\Lib\site-packages\fastapi\routing.py", line 201, in merged_lifespan
+    async with original_context(app) as maybe_original_state:
+               ~~~~~~~~~~~~~~~~^^^^^
+  File "C:\Users\dream\AppData\Local\Python\pythoncore-3.14-64\Lib\contextlib.py", line 221, in __aexit__
+    await anext(self.gen)
+  File "d:\DREAMVFIA Assistant\.venv\Lib\site-packages\fastapi\routing.py", line 201, in merged_lifespan
+    async with original_context(app) as maybe_original_state:
+               ~~~~~~~~~~~~~~~~^^^^^
+  File "C:\Users\dream\AppData\Local\Python\pythoncore-3.14-64\Lib\contextlib.py", line 221, in __aexit__
+    await anext(self.gen)
+  File "d:\DREAMVFIA Assistant\.venv\Lib\site-packages\fastapi\routing.py", line 201, in merged_lifespan
+    async with original_context(app) as maybe_original_state:
+               ~~~~~~~~~~~~~~~~^^^^^
+  File "C:\Users\dream\AppData\Local\Python\pythoncore-3.14-64\Lib\contextlib.py", line 221, in __aexit__
+    await anext(self.gen)
+  File "d:\DREAMVFIA Assistant\.venv\Lib\site-packages\fastapi\routing.py", line 201, in merged_lifespan
+    async with original_context(app) as maybe_original_state:
+               ~~~~~~~~~~~~~~~~^^^^^
+  File "C:\Users\dream\AppData\Local\Python\pythoncore-3.14-64\Lib\contextlib.py", line 221, in __aexit__
+    await anext(self.gen)
+  File "d:\DREAMVFIA Assistant\.venv\Lib\site-packages\fastapi\routing.py", line 201, in merged_lifespan
+    async with original_context(app) as maybe_original_state:
+               ~~~~~~~~~~~~~~~~^^^^^
+  File "C:\Users\dream\AppData\Local\Python\pythoncore-3.14-64\Lib\contextlib.py", line 221, in __aexit__
+    await anext(self.gen)
+  File "d:\DREAMVFIA Assistant\.venv\Lib\site-packages\fastapi\routing.py", line 201, in merged_lifespan
+    async with original_context(app) as maybe_original_state:
+               ~~~~~~~~~~~~~~~~^^^^^
+  File "C:\Users\dream\AppData\Local\Python\pythoncore-3.14-64\Lib\contextlib.py", line 221, in __aexit__
+    await anext(self.gen)
+  File "d:\DREAMVFIA Assistant\.venv\Lib\site-packages\fastapi\routing.py", line 201, in merged_lifespan
+    async with original_context(app) as maybe_original_state:
+               ~~~~~~~~~~~~~~~~^^^^^
+  File "C:\Users\dream\AppData\Local\Python\pythoncore-3.14-64\Lib\contextlib.py", line 221, in __aexit__
+    await anext(self.gen)
+  File "D:\DREAMVFIA Assistant\dreamhelp-v3\services\brain-core\src\main.py", line 116, in lifespan
+    await mem_close_pool()
+  File "D:\DREAMVFIA Assistant\dreamhelp-v3\services\brain-core\src\modules\memory\db.py", line 36, in close_pool
+    await _pool.close()
+  File "d:\DREAMVFIA Assistant\.venv\Lib\site-packages\asyncpg\pool.py", line 968, in close
+    await asyncio.gather(*release_coros)
+  File "d:\DREAMVFIA Assistant\.venv\Lib\site-packages\asyncpg\pool.py", line 258, in wait_until_released
+    async def wait_until_released(self) -> None:
+asyncio.exceptions.CancelledError: Cancelled via cancel scope 1acbd94c4d0 by <Task cancelling name='Task-2' coro=<LifespanOn.main() running at d:\DREAMVFIA Assistant\.venv\Lib\site-packages\uvicorn\lifespan\on.py:86>>
+
+ERROR:    Application shutdown failed. Exiting.
