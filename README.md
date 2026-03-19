@@ -1,23 +1,16 @@
 # 
 ```
- ███╗   ███╗ ██████╗ ██████╗ ██╗██╗     ███████╗
- ████╗ ████║██╔═══██╗██╔══██╗██║██║     ██╔════╝
- ██╔████╔██║██║   ██║██████╔╝██║██║     █████╗  
- ██║╚██╔╝██║██║   ██║██╔══██╗██║██║     ██╔══╝  
- ██║ ╚═╝ ██║╚██████╔╝██║  ██║██║███████╗███████╗
- ╚═╝     ╚═╝ ╚═════╝ ╚═╝  ╚═╝╚═╝╚══════╝╚══════╝
-                                                  
- ██████╗ ███████╗ ██████╗ ██████╗ ██╗███████╗████████╗
- ██╔══██╗██╔════╝██╔════╝ ██╔══██╗██║██╔════╝╚══██╔══╝
- ██████╔╝█████╗  ██║  ███╗██████╔╝██║███████╗   ██║   
- ██╔══██╗██╔══╝  ██║   ██║██╔══██╗██║╚════██║   ██║   
- ██║  ██║███████╗╚██████╔╝██║  ██║██║███████║   ██║   
- ╚═╝  ╚═╝╚══════╝ ╚═════╝ ╚═╝  ╚═╝╚═╝╚══════╝   ╚═╝   
+██████╗ ███████╗████████╗██████╗  ██████╗ ██████╗  ██████╗  █████╗ ██████╗ ██████╗
+██╔══██╗██╔════╝╚══██╔══╝██╔══██╗██╔═══██╗██╔══██╗██╔═══██╗██╔══██╗██╔══██╗
+██████╔╝█████╗     ██║   ██████╔╝██║   ██║██████╔╝██║   ██║██████╔╝██║  ██║
+██╔══██╗██╔══╝     ██║   ██╔══██╗██║   ██║██╔══██╗██║   ██║██╔══██╗██║  ██║
+██║  ██║███████╗   ██║   ██║  ██║╚██████╔╝██║  ██║╚██████╔╝██║  ██║██████╔╝
+╚═╝  ╚═╝╚══════╝   ╚═╝   ╚═╝  ╚═╝ ╚═════╝ ╚═╝  ╚═╝ ╚═════╝ ╚═╝  ╚═╝╚═════╝
 ```
 ---
 
 <p align="center">
-  <img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&weight=600&size=32&pause=1000&color=00FF00&center=true&vCenter=true&width=435&lines=💻+DREAMVFIA+AI+Assistant;🚀+v3.7.0+Enterprise+Edition;🔮+100+Skills+%7C+5+Agents;⚡+800+TOPS+GPU+Power" alt="Typing SVG" />
+  <img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&weight=600&size=32&pause=1000&color=00FF00&center=true&vCenter=true&width=435&lines=💻+DREAM+HELPER+AI+Assistant;🚀+v3.7.0+Enterprise+Edition;🔮+100+Skills+%7C+5+Agents;⚡+800+TOPS+GPU+Power" alt="Typing SVG" />
 </p>
 
 <p align="center">
@@ -30,9 +23,7 @@
   <a href="https://github.com/DREAMVFIAUNION/dreamhelper-v3/releases">
     <img src="https://img.shields.io/github/v/release/DREAMVFIAUNION/dreamhelper-v3?color=00ff00&label=Version" alt="release">
   </a>
-  <a href="https://github.com/DREAMVFIAUNION/dreamhelper-v3/blob/master/LICENSE">
-    <img src="https://img.shields.io/badge/License-PROPRIETARY-00ff00" alt="license">
-  </a>
+  <img src="https://img.shields.io/badge/License-PROPRIETARY-00ff00" alt="license">
   <img src="https://img.shields.io/badge/Docker-7+Containers-00ff00" alt="docker">
   <img src="https://img.shields.io/badge/Python-3.12+-00ff00" alt="python">
   <img src="https://img.shields.io/badge/Next.js-15-00ff00" alt="nextjs">
@@ -41,15 +32,15 @@
 ---
 
 <p align="center">
-  <b>🎯 企业级 AI 助手 · 赛博朋克主题 · 100+ 技能 · 5 智能体 · 本地 GPU 加速</b>
+  <b>🎯 Enterprise AI Assistant · Cyberpunk Theme · 100+ Skills · 5 Agents · Local GPU Accelerated</b>
 </p>
 
 ---
 
-## 📺 演示视频 Demo
+## 📺 Demo Videos
 
 <p align="center">
-  <b>🎬 YouTube Shorts 演示</b>
+  <b>🎬 YouTube Shorts Demo</b>
 </p>
 
 <table align="center">
@@ -59,13 +50,13 @@
         <img src="https://img.youtube.com/vi/sBnOLkFhz-I/0.jpg" width="280" alt="YouTube Shorts" />
       </a>
       <br/>
-      <sub>YouTube Shorts 演示</sub>
+      <sub>YouTube Shorts Demo</sub>
     </td>
   </tr>
 </table>
 
 <p align="center">
-  <b>🌍 YouTube 功能演示</b>
+  <b>🌍 YouTube Full Demo</b>
 </p>
 
 <table align="center">
@@ -75,37 +66,37 @@
         <img src="https://img.youtube.com/vi/Yct5YYgZeJU/0.jpg" width="280" alt="YouTube Demo" />
       </a>
       <br/>
-      <sub>YouTube 功能演示</sub>
+      <sub>YouTube Full Demo</sub>
     </td>
   </tr>
 </table>
 
 ---
 
-## ✨ 核心特性
+## ✨ Key Features
 
 ```
 ┌─────────────────────────────────────────────────────────────────────┐
-│                      🌟 DREAMVFIA v3.7.0                           │
+│                      🌟 DREAM HELPER v3.7.0                        │
 ├─────────────────────────────────────────────────────────────────────┤
-│  🤖 5 智能体          │  💯 100+ 技能      │  🎯 99.9% 可用率   │
-│  ⚡ 800+ TOPS GPU       │  🔮 RAG 知识库      │  📡 WebSocket      │
-│  🎨 赛博朋克 UI        │  🔐 企业级安全      │  🚀 一键部署       │
-│  🎤 语音合成/识别      │  📊 Admin 面板       │  💾 会话持久化     │
+│  🤖 5 Agents           │  💯 100+ Skills    │  🎯 99.9% Uptime   │
+│  ⚡ 800+ TOPS GPU       │  🔮 RAG Knowledge  │  📡 WebSocket      │
+│  🎨 Cyberpunk UI       │  🔐 Enterprise Sec  │  🚀 One-Click      │
+│  🎤 TTS/STT           │  📊 Admin Panel     │  💾 Session Persist │
 └─────────────────────────────────────────────────────────────────────┘
 ```
 
-### 🎭 智能体系统
+### 🎭 Agent System
 
-| 智能体 | 能力 | 场景 |
-|--------|------|------|
-| 🔵 **ReAct** | 工具调用推理 | 多步骤任务 |
-| 💻 **Code** | 代码生成/执行 | 编程开发 |
-| ✍️ **Writing** | 文本创作 | 内容生成 |
-| 📈 **Analysis** | 数据分析 | 商业智能 |
-| 🧠 **PlanExecute** | 规划执行 | 复杂任务 |
+| Agent | Capability | Use Case |
+|-------|------------|----------|
+| 🔵 **ReAct** | Tool Calling Reasoning | Multi-step Tasks |
+| 💻 **Code** | Code Generation/Execution | Software Development |
+| ✍️ **Writing** | Content Creation | Content Generation |
+| 📈 **Analysis** | Data Analysis | Business Intelligence |
+| 🧠 **PlanExecute** | Planning & Execution | Complex Tasks |
 
-### 🎨 赛博朋克 UI
+### 🎨 Cyberpunk UI
 
 <p align="center">
   <img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&size=14&pause=500&color=00FF00&background=0D1117&lines=◈+Neon+Glow+Effects;◈+Dark+Mode+First;◈+Animated+Components;◈+Cyber+Theme" alt="features">
@@ -113,17 +104,17 @@
 
 ---
 
-## 🏗️ 系统架构
+## 🏗️ System Architecture
 
 ```
                     ┌─────────────────────────────────────┐
-                    │         🚀 Next.js 15 Frontend      │
-                    │    (React 19 + TailwindCSS)         │
+                    │         🚀 Next.js 15 Frontend       │
+                    │    (React 19 + TailwindCSS)        │
                     └──────────────────┬──────────────────┘
                                        │ 
                     ┌──────────────────▼──────────────────┐
-                    │        ⚡ NestJS Gateway            │
-                    │    (Fastify + WebSocket)            │
+                    │        ⚡ NestJS Gateway              │
+                    │    (Fastify + WebSocket)             │
                     └──────────────────┬──────────────────┘
                                        │
         ┌───────────────────────────────┼───────────────────────────────┐
@@ -131,7 +122,7 @@
         ▼                               ▼                               ▼
 ┌───────────────┐           ┌───────────────────┐           ┌───────────────────┐
 │   🧠 Brain    │           │   💾 PostgreSQL   │           │    📦 Redis      │
-│   Core (AI)   │           │   (Database)      │           │   (Cache)         │
+│   Core (AI)   │           │   (Database)       │           │   (Cache)         │
 │   FastAPI     │           │   Prisma ORM      │           │   Pub/Sub         │
 │   Python      │           │                   │           │                   │
 └───────────────┘           └───────────────────┘           └───────────────────┘
@@ -139,198 +130,200 @@
         ▼
 ┌───────────────┐  ┌───────────────────┐  ┌───────────────────┐  ┌───────────────────┐
 │  📚 Milvus    │  │  🔍 Elasticsearch │  │    🖼️ MinIO     │  │   💻 GPU         │
-│  (Vector)     │  │   (Full-text)     │  │   (Storage)      │  │   (Compute)      │
+│  (Vector)     │  │   (Full-text)    │  │   (Storage)       │  │   (Compute)      │
 └───────────────┘  └───────────────────┘  └───────────────────┘  └───────────────────┘
 ```
 
 ---
 
-## 🛠️ 技术栈
+## 🛠️ Tech Stack
 
 <div align="center">
 
-| 层级 | 技术 |
-|------|------|
-| 🖥️ **前端** | Next.js 15 · React 19 · TailwindCSS · Framer Motion |
-| 🌐 **网关** | NestJS 10 · Fastify · WebSocket |
-| 🧠 **AI 核心** | Python 3.12 · FastAPI · Pydantic |
-| 💾 **数据库** | PostgreSQL 17 · Prisma ORM · Redis 8 |
-| 🔎 **检索** | Milvus 2.4 · Elasticsearch 8 |
-| 🐳 **部署** | Docker Compose (7 容器) |
-| 🧪 **测试** | Vitest · Pytest · Playwright |
+| Layer | Technology |
+|-------|------------|
+| 🖥️ **Frontend** | Next.js 15 · React 19 · TailwindCSS · Framer Motion |
+| 🌐 **Gateway** | NestJS 10 · Fastify · WebSocket |
+| 🧠 **AI Core** | Python 3.12 · FastAPI · Pydantic |
+| 💾 **Database** | PostgreSQL 17 · Prisma ORM · Redis 8 |
+| 🔎 **Search** | Milvus 2.4 · Elasticsearch 8 |
+| 🐳 **Deploy** | Docker Compose (7 Containers) |
+| 🧪 **Testing** | Vitest · Pytest · Playwright |
 
 </div>
 
 ---
 
-## 📦 100+ 技能一览
+## 📦 100+ Skills Overview
 
 ```
 ╔═══════════════════════════════════════════════════════════════════════╗
-║                        🎯 技能生态系统                                 ║
+║                        🎯 Skill Ecosystem                             ║
 ╠═══════════════════════════════════════════════════════════════════════╣
 ║                                                                       ║
-║  📱 日常    [15]  calculator · unit_converter · password_generator   ║
-║                bmi_calculator · random_generator · countdown_timer    ║
+║  📱 Daily      [15]  calculator · unit_converter · password_gen     ║
+║                    bmi_calculator · random_generator · timer          ║
 ║                                                                       ║
-║  💼 办公    [15]  todo_manager · pomodoro_timer · json_formatter    ║
-║                csv_analyzer · schedule_planner · invoice_generator    ║
+║  💼 Office    [15]  todo_manager · pomodoro_timer · json_fmt       ║
+║                    csv_analyzer · schedule_planner · invoice_gen      ║
 ║                                                                       ║
-║  💻 编程    [15]  base64_codec · url_codec · hash_generator          ║
-║                jwt_decoder · sql_formatter · code_formatter           ║
+║  💻 Coding    [15]  base64_codec · url_codec · hash_gen            ║
+║                    jwt_decoder · sql_formatter · code_fmt            ║
 ║                                                                       ║
-║  📄 文档    [13]  markdown_processor · text_statistics · pdf_        ║
-║                text_summarizer · word_counter                         ║
+║  📄 Document  [13]  markdown_proc · text_stats · pdf_              ║
+║                    text_summarizer · word_counter                    ║
 ║                                                                       ║
-║  🎮 娱乐    [12]  fortune_teller · name_generator · ascii_art        ║
-║                sudoku_solver · rock_paper_scissors                   ║
+║  🎮 Fun       [12]  fortune_teller · name_gen · ascii_art           ║
+║                    sudoku_solver · rock_paper_scissors               ║
 ║                                                                       ║
-║  🖼️ 图像    [12]  image_resize · image_watermark · qrcode_           ║
-║                image_filter · image_collage                           ║
+║  🖼️ Image    [12]  image_resize · watermark · qrcode_               ║
+║                    image_filter · image_collage                      ║
 ║                                                                       ║
-║  🎵 音频    [10]  audio_convert · audio_trim · audio_merge            ║
-║                audio_volume · audio_speed                             ║
+║  🎵 Audio    [10]  audio_convert · audio_trim · audio_merge          ║
+║                    audio_volume · audio_speed                       ║
 ║                                                                       ║
-║  🎬 视频    [8]   video_thumbnail · video_trim · video_merge          ║
-║                video_to_gif · video_extract_audio                     ║
+║  🎬 Video    [8]   video_thumb · video_trim · video_merge            ║
+║                    video_to_gif · video_extract_audio                ║
 ║                                                                       ║
 ╚═══════════════════════════════════════════════════════════════════════╝
 ```
 
 ---
 
-## 🚀 快速开始
+## 🚀 Quick Start
 
-### 前置要求
+### Prerequisites
 
 ```
 ✅ Node.js ≥ 20      ✅ pnpm ≥ 9        ✅ Python ≥ 3.12
 ✅ Docker           ✅ Docker Compose
 ```
 
-### 1. 克隆项目
+### 1. Clone Project
 
 ```bash
 git clone https://github.com/DREAMVFIAUNION/dreamhelper-v3.git
 cd dreamhelper-v3
 ```
 
-### 2. 安装依赖
+### 2. Install Dependencies
 
 ```bash
-# 安装前端依赖
+# Frontend dependencies
 pnpm install
 
-# 安装 AI 核心依赖
+# AI Core dependencies
 cd services/brain-core
 pip install -r requirements.txt
 ```
 
-### 3. 配置环境变量
+### 3. Configure Environment
 
 ```bash
 cp .env.example .env
-# 编辑 .env 填入配置
+# Edit .env with your config
 ```
 
-### 4. 启动 Docker 服务
+### 4. Start Docker Services
 
 ```bash
 docker compose up -d postgres redis milvus es minio
 ```
 
-### 5. 初始化数据库
+### 5. Initialize Database
 
 ```bash
 pnpm db:migrate
 pnpm db:seed
 ```
 
-### 6. 启动开发服务
+### 6. Start Development
 
 ```bash
-# 前端 (http://localhost:3000)
+# Frontend (http://localhost:3000)
 pnpm --filter web-portal dev
 
-# AI 核心 (http://localhost:8000)
+# AI Core (http://localhost:8000)
 cd services/brain-core
 uvicorn src.main:app --reload --port 8000
 
-# 网关 (可选) (http://localhost:3001)
+# Gateway (Optional) (http://localhost:3001)
 pnpm --filter gateway dev
 ```
 
-### 7. 一键启动 (Docker)
+### 7. One-Click Start (Docker)
 
 ```bash
 docker compose up -d
-# 访问 http://localhost:3000
+# Visit http://localhost:3000
 ```
 
 ---
 
-## 📡 API 接口
+## 📡 API Endpoints
 
 ```
 ┌──────────────────────────────────────────────────────────────────────────┐
-│                            🌐 API 端点                                    │
+│                            🌐 API Endpoints                              │
 ├──────────────────────────────────────────────────────────────────────────┤
 │                                                                          │
-│  🔐 /api/auth/*      │  认证系统                                        │
-│     POST /login      │  用户登录                                        │
-│     POST /register   │  用户注册                                        │
-│     POST /logout     │  退出登录                                        │
-│     PUT /password    │  修改密码                                        │
+│  🔐 /api/auth/*     │  Authentication                                  │
+│     POST /login     │  User Login                                     │
+│     POST /register  │  User Registration                              │
+│     POST /logout    │  Logout                                         │
+│     PUT /password   │  Change Password                                │
 │                                                                          │
-│  💬 /api/chat/*      │  对话系统                                        │
-│     POST completion   │  AI 对话                                         │
-│     GET/POST session │  会话管理                                         │
+│  💬 /api/chat/*    │  Chat System                                     │
+│     POST completion │  AI Chat                                         │
+│     GET/POST session│  Session Management                              │
 │                                                                          │
-│  📚 /api/knowledge   │  知识库                                          │
-│     POST /upload     │  上传文档                                        │
-│     GET /list        │  获取列表                                        │
+│  📚 /api/knowledge │  Knowledge Base                                   │
+│     POST /upload   │  Upload Documents                                │
+│     GET /list      │  Get List                                        │
 │                                                                          │
-│  🎤 /api/multimodal  │  语音处理                                        │
-│     POST /stt        │  语音转文字                                      │
-│     POST /tts        │  文字转语音                                      │
+│  🎤 /api/multimodal│  Voice Processing                                │
+│     POST /stt      │  Speech to Text                                  │
+│     POST /tts      │  Text to Speech                                  │
 │                                                                          │
 └──────────────────────────────────────────────────────────────────────────┘
 ```
 
 ---
 
-## 🎮 功能演示
+## 🎮 Feature Demos
 
-### 💬 智能对话
+### 💬 AI Chat
 
 ```python
-# 用户输入
-user: "帮我写一首关于星空的诗"
+# User Input
+user: "Write a poem about starlight"
 
-# AI 回复
-✨ 星光点点夜空深，银河倒映梦幻心。
-   浩瀚宇宙无穷已，地上仰望思绪沉。
+# AI Response
+✨ Stars twinkle in the deep night sky,
+   Milky Way reflects a dreamy eye.
+   Vast universe so endless and bright,
+   Gazing up, my thoughts take flight.
 ```
 
-### 🖼️ 图像处理
+### 🖼️ Image Processing
 
 ```bash
-# 用户: "帮我给图片添加水印"
-# → 自动调用 image_watermark 技能
-# → 返回处理后的图片
+# User: "Add watermark to this image"
+# → Auto calls image_watermark skill
+# → Returns processed image
 ```
 
-### 📊 数据分析
+### 📊 Data Analysis
 
 ```bash
-# 用户: "分析这份销售数据"
-# → AI 自动调用 csv_analyzer
-# → 返回可视化报告
+# User: "Analyze this sales data"
+# → AI auto calls csv_analyzer
+# → Returns visualization report
 ```
 
 ---
 
-## 🌍 访问我们
+## 🌍 Connect With Us
 
 <p align="center">
   <a href="https://github.com/DREAMVFIAUNION">
@@ -340,7 +333,7 @@ user: "帮我写一首关于星空的诗"
 
 ---
 
-## 📊 项目统计
+## 📊 Project Stats
 
 <p align="center">
 
@@ -353,24 +346,24 @@ user: "帮我写一首关于星空的诗"
 
 ---
 
-## 🤝 贡献指南
+## 🤝 Contributing
 
-欢迎提交 Issue 和 Pull Request！
+Welcome to submit Issues and Pull Requests!
 
 ```bash
-# 1. Fork 项目
-# 2. 创建特性分支
+# 1. Fork the project
+# 2. Create feature branch
 git checkout -b feature/AmazingFeature
-# 3. 提交更改
+# 3. Commit changes
 git commit -m 'Add some AmazingFeature'
-# 4. 推送分支
+# 4. Push branch
 git push origin feature/AmazingFeature
-# 5. 打开 Pull Request
+# 5. Open Pull Request
 ```
 
 ---
 
-## 📄 许可证
+## 📄 License
 
 ```
 © 2026 DREAMVFIA UNION
