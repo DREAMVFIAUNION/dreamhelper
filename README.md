@@ -1,16 +1,16 @@
 # 
 ```
-██████╗ ███████╗████████╗██████╗  ██████╗ ██████╗  ██████╗  █████╗ ██████╗ ██████╗
-██╔══██╗██╔════╝╚══██╔══╝██╔══██╗██╔═══██╗██╔══██╗██╔═══██╗██╔══██╗██╔══██╗
-██████╔╝█████╗     ██║   ██████╔╝██║   ██║██████╔╝██║   ██║██████╔╝██║  ██║
-██╔══██╗██╔══╝     ██║   ██╔══██╗██║   ██║██╔══██╗██║   ██║██╔══██╗██║  ██║
-██║  ██║███████╗   ██║   ██║  ██║╚██████╔╝██║  ██║╚██████╔╝██║  ██║██████╔╝
-╚═╝  ╚═╝╚══════╝   ╚═╝   ╚═╝  ╚═╝ ╚═════╝ ╚═╝  ╚═╝ ╚═════╝ ╚═╝  ╚═╝╚═════╝
+██████╗ ██╗   ██╗██╗   ██╗███████╗███╗   ███╗ █████╗ ███╗   ██╗██████╗ 
+██╔══██╗██║   ██║╚██╗ ██╔╝██╔════╝████╗ ████║██╔══██╗████╗  ██║██╔══██╗
+██████╔╝██║    ██║ ╚████╔╝ █████╗  ██╔████╔██║██████║║██╔██╗ ██║██║  ██║
+██╔═══╝ ██║    ██║  ╚██╔╝  ██╔══╝  ██║╚██╔╝██║██╔══██║██║╚██╗██║██║  ██║
+██║     ╚██████╔╝██║   ██║   ███████╗██║ ╚═╝ ██║██║  ██║██║ ╚████║██████╔╝
+╚═╝      ╚═════╝ ╚═╝   ╚═╝   ╚══════╝╚═╝     ╚═╝╚═╝  ╚═╝╚═╝  ╚═══╝╚═════╝ 
 ```
 ---
 
 <p align="center">
-  <img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&weight=600&size=32&pause=1000&color=00FF00&center=true&vCenter=true&width=435&lines=💻+DREAM+HELPER+AI+Assistant;🚀+v3.7.0+Enterprise+Edition;🔮+100+Skills+%7C+5+Agents;⚡+800+TOPS+GPU+Power" alt="Typing SVG" />
+  <img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&weight=600&size=32&pause=1000&color=00FF00&center=true&vCenter=true&width=435&lines=💻+DREAMVFIA+AI+Assistant;🚀+v3.7.0+Enterprise+Edition;🔮+100+Skills+%7C+5+Agents;⚡+800+TOPS+GPU+Power" alt="Typing SVG" />
 </p>
 
 <p align="center">
@@ -77,7 +77,7 @@
 
 ```
 ┌─────────────────────────────────────────────────────────────────────┐
-│                      🌟 DREAM HELPER v3.7.0                        │
+│                      🌟 DREAMVFIA v3.7.0                          │
 ├─────────────────────────────────────────────────────────────────────┤
 │  🤖 5 Agents           │  💯 100+ Skills    │  🎯 99.9% Uptime   │
 │  ⚡ 800+ TOPS GPU       │  🔮 RAG Knowledge  │  📡 WebSocket      │
@@ -165,7 +165,7 @@
 ║                    bmi_calculator · random_generator · timer          ║
 ║                                                                       ║
 ║  💼 Office    [15]  todo_manager · pomodoro_timer · json_fmt       ║
-║                    csv_analyzer · schedule_planner · invoice_gen      ║
+║                    csv_analyzer · schedule_planner · invoice_gen        ║
 ║                                                                       ║
 ║  💻 Coding    [15]  base64_codec · url_codec · hash_gen            ║
 ║                    jwt_decoder · sql_formatter · code_fmt            ║
