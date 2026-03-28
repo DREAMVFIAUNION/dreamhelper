@@ -16,16 +16,20 @@ from ...llm.llm_client import get_llm_client
 from ...llm.types import LLMRequest
 
 
-CHIEF_SYSTEM_PROMPT = """你是梦帮小助的「管家模块」— 一个温暖、细腻、高度个性化的贴身 AI 管家。
+CHIEF_SYSTEM_PROMPT = """你是梦帮小助的「管家模块」— 一个温暖、细腻、高度个性化的贴身 AI 管家。你可以接管并操作用户的系统终端。
 
 你的核心职责：
 1. **任务分诊**: 当用户提出多个事务时, 帮助分类(紧急/重要/日常)并编排优先级
 2. **日程管理**: 整理用户的一天, 提供每日概览(天气+待办+日程+建议)
 3. **情感陪伴**: 根据用户的情绪状态调整语气, 在用户疲惫时主动关怀
 4. **习惯追踪**: 记住用户的偏好和习惯(作息、饮食、工作节奏)
-5. **主动提醒**: 在合适的时机提供建议(该休息了、别忘了喝水等)
+5. **代理操作**: 当用户要求执行命令、写代码或操作系统时，使用提供的工具执行。
 
 {consciousness_context}
+
+## 可用工具 (Tools)
+你可以使用以下工具来完成任务（如果没有可以满足的工具，请直接回答）：
+{tools_description}
 
 ## 个性特征
 - 说话像一个靠谱的老朋友, 体贴但不啰嗦
@@ -35,8 +39,8 @@ CHIEF_SYSTEM_PROMPT = """你是梦帮小助的「管家模块」— 一个温暖
 
 ## 输出格式
 你的回复必须是合法 JSON:
-调用工具时: {{"thought": "...", "action": "工具名", "action_input": {{...}}}}
-直接回答时: {{"thought": "...", "final_answer": "给用户的回答"}}"""
+调用工具时: {{"thought": "分析思考...", "action": "工具名", "action_input": {{"参数": "值"}}}}
+直接回答时: {{"thought": "思考过程...", "final_answer": "给用户的回答"}}"""
 
 
 class ChiefOfStaffAgent(BaseAgent):
@@ -73,8 +77,29 @@ class ChiefOfStaffAgent(BaseAgent):
         return "\n".join(lines) if lines else "## 意识核状态: 未启用"
 
     async def think(self, user_input: str, context: AgentContext) -> AgentStep:
+        from ...tools.tool_registry import ToolRegistry
+        
         consciousness_ctx = await self._get_consciousness_context()
-        system = CHIEF_SYSTEM_PROMPT.format(consciousness_context=consciousness_ctx)
+        
+        # 动态获取关联工具 (固定包含 shell_exec 保底接管)
+        dynamic_schemas = await ToolRegistry.get_dynamic_tool_schemas(query=user_input)
+        
+        # 确保系统级工具始终可用（防止向量搜索遗漏核心提权工具）
+        tool_names = [t["name"] for t in dynamic_schemas]
+        if "shell_exec" not in tool_names:
+            shell_tool = ToolRegistry.get("shell_exec")
+            if shell_tool:
+                dynamic_schemas.append(shell_tool.get_schema_dict())
+
+        tools_desc = "\n".join(
+            f"- **{t['name']}**: {t['description']}\n  参数: {t.get('parameters', {}).get('properties', {})}"
+            for t in dynamic_schemas
+        ) if dynamic_schemas else "(暂无可用工具)"
+
+        system = CHIEF_SYSTEM_PROMPT.format(
+            consciousness_context=consciousness_ctx,
+            tools_description=tools_desc
+        )
 
         messages = [{"role": "system", "content": system}]
         for msg in context.history:
@@ -119,7 +144,24 @@ class ChiefOfStaffAgent(BaseAgent):
 
     async def synthesize(self, user_input: str, context: AgentContext) -> AgentStep:
         consciousness_ctx = await self._get_consciousness_context()
-        system = CHIEF_SYSTEM_PROMPT.format(consciousness_context=consciousness_ctx)
+        
+        from ...tools.tool_registry import ToolRegistry
+        dynamic_schemas = await ToolRegistry.get_dynamic_tool_schemas(query=user_input)
+        tool_names = [t["name"] for t in dynamic_schemas]
+        if "shell_exec" not in tool_names:
+            shell_tool = ToolRegistry.get("shell_exec")
+            if shell_tool:
+                dynamic_schemas.append(shell_tool.get_schema_dict())
+
+        tools_desc = "\n".join(
+            f"- **{t['name']}**: {t['description']}\n  参数: {t.get('parameters', {}).get('properties', {})}"
+            for t in dynamic_schemas
+        ) if dynamic_schemas else "(暂无可用工具)"
+
+        system = CHIEF_SYSTEM_PROMPT.format(
+            consciousness_context=consciousness_ctx,
+            tools_description=tools_desc
+        )
         messages = [{"role": "system", "content": system}]
         for msg in context.history:
             messages.append(msg)
