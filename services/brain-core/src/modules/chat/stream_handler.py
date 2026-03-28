@@ -171,23 +171,23 @@ async def chat_completions(request: Request, req: ChatRequest):
         agent_name, agent = await agent_router.route(req.content)
         return await _agent_completions(req, model, agent_name, agent, user_id)
 
-    # ── 新路由逻辑: 双脑优先 ──
+    # ── 路由逻辑: 关键词命中 Agent → ReAct 工具循环，否则 → 双脑对话 ──
     from ..agents.agent_router import route_by_keywords
     from ..dual_brain import get_brain_engine
     brain = get_brain_engine()
 
     kw_route = route_by_keywords(req.content)
 
-    # 只有需要工具调用的 Agent 才绕过双脑（react_agent / plan_execute / browser）
-    TOOL_AGENTS = {"react_agent", "plan_execute_agent", "browser_agent"}
-    if kw_route and kw_route in TOOL_AGENTS:
+    # 所有被关键词路由命中的 Agent 都进入 ReAct 工具调用循环
+    # （这是让 Agent 能真正调用 shell_exec / file_write 等工具的关键入口）
+    if kw_route:
         await HookRegistry.emit(HookEventType.AGENT_ROUTE, {
             "session_id": req.session_id, "agent": kw_route, "query": req.content[:100],
         })
         agent = agent_router.get_agent(kw_route)
         return await _agent_completions(req, model, kw_route, agent, user_id)
 
-    # 所有其他查询 → 对话模式（内部判断是否走双脑）
+    # 无关键词命中 → 普通对话模式（内部判断是否走双脑）
     return await _chat_completions(req, model, user_id)
 
 
