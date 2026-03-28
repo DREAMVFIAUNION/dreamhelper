@@ -25,5 +25,13 @@ export async function brainCoreFetch(path: string, init?: RequestInit): Promise<
     headers.set('Cache-Control', 'no-cache')
   }
 
-  return fetch(url, { ...init, headers, cache: 'no-store' })
+  // Agent ReAct 循环可能需要 30-120 秒，设置足够的超时
+  const controller = new AbortController()
+  const timeout = setTimeout(() => controller.abort(), 120_000)
+
+  try {
+    return await fetch(url, { ...init, headers, cache: 'no-store', signal: controller.signal })
+  } finally {
+    clearTimeout(timeout)
+  }
 }

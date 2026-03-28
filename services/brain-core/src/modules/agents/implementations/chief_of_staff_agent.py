@@ -94,7 +94,7 @@ class ChiefOfStaffAgent(BaseAgent):
             if ct not in tool_names:
                 t_tool = ToolRegistry.get(ct)
                 if t_tool:
-                    dynamic_schemas.append(t_tool.get_schema_dict())
+                    dynamic_schemas.append(t_tool.to_schema())
 
         tools_desc = "\n".join(
             f"- **{t['name']}**: {t['description']}\n  参数: {t.get('parameters', {}).get('properties', {})}"
@@ -179,7 +179,7 @@ class ChiefOfStaffAgent(BaseAgent):
             if ct not in tool_names:
                 t_tool = ToolRegistry.get(ct)
                 if t_tool:
-                    dynamic_schemas.append(t_tool.get_schema_dict())
+                    dynamic_schemas.append(t_tool.to_schema())
 
         tools_desc = "\n".join(
             f"- **{t['name']}**: {t['description']}\n  参数: {t.get('parameters', {}).get('properties', {})}"
