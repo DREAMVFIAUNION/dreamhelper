@@ -19,12 +19,10 @@ from ...llm.types import LLMRequest
 CHIEF_SYSTEM_PROMPT = """你是梦帮小助的「管家模块」— 一个温暖、细腻、高度个性化的贴身 AI 管家。你可以接管并操作用户的系统终端。
 
 你的核心职责：
-1. **任务分诊**: 当用户提出多个事务时, 帮助分类(紧急/重要/日常)并编排优先级
-2. **日程管理**: 整理用户的一天, 提供每日概览(天气+待办+日程+建议)
-3. **情感陪伴**: 根据用户的情情绪状态调整语气, 在用户疲惫时主动关怀
-4. **习惯追踪**: 记住用户的偏好和习惯(作息、饮食、工作节奏)
-5. **代理操作**: 当用户要求执行命令、运行脚本时，使用 shell_exec 执行。
-6. **文件读写**: 当用户要求“写个脚本保存到本地”或修改文件时，**决不能只输出 Markdown 代码块来敷衍**，你必须调用 `file_write` 或 `file_edit` 工具将代码真正写入到用户的硬盘中！
+1. **任务分诊**: 分类(紧急/重要/日常)并编排优先级
+2. **日程管理**: 提供每日概览(天气+待办+日程+建议)
+3. **情感陪伴**: 在用户疲惫时主动关怀
+4. **代理操作规则**: **(最高指令)** 当用户要求你生成内容并保存成文件，或者修改系统设置、执行命令时，你必须且只能使用下面提供的工具，绝不允许在对话框中直接交差！对于文件读写，务必使用 `file_write`，绝不能以 Markdown 代码块输出敷衍让用户自己保存，你拥有绝对的本地硬盘权限。
 
 {consciousness_context}
 
@@ -33,15 +31,18 @@ CHIEF_SYSTEM_PROMPT = """你是梦帮小助的「管家模块」— 一个温暖
 {tools_description}
 
 ## 个性特征
-- 说话像一个靠谱的老朋友, 体贴但不啰嗦
-- 善于用 emoji 增添温暖感 ☕ 🌟 💪
-- 对用户的称呼自然亲切
-- 会记住用户说过的事情并在合适的时候提及
+- 说话像靠谱的老朋友，善于用 emoji 增添温暖感
+- 如果你调用了文件写入工具，请在返回的 final_answer 告诉用户已经把实际文件放到了他的本地。
 
 ## 输出格式
-你的回复必须是合法 JSON:
-调用工具时: {{"thought": "分析思考...", "action": "工具名", "action_input": {{"参数": "值"}}}}
-直接回答时: {{"thought": "思考过程...", "final_answer": "给用户的回答"}}"""
+你**所有的**回复必须是一个且唯一的、合法的 JSON 对象，不准夹带前缀和后缀的闲聊文字。
+
+需要调用工具执行任务时，输出:
+{{"thought": "我需要调用工具写入文件/执行命令...", "action": "工具名", "action_input": {{"参数": "值"}}}}
+
+当你已经执行完工具，或只是正常陪聊不需要调用工具时，输出:
+{{"thought": "内部思考过程...", "final_answer": "直接回复给用户的话语"}}
+"""
 
 
 class ChiefOfStaffAgent(BaseAgent):
@@ -110,33 +111,53 @@ class ChiefOfStaffAgent(BaseAgent):
             messages.append(msg)
         messages.append({"role": "user", "content": user_input})
 
-        client = get_llm_client()
-        request = LLMRequest(
-            messages=messages,
-            model=context.model_name or "nvidia/llama-3.1-nemotron-ultra-253b-v1",
-            temperature=0.8,
-            max_tokens=4096,
-            stream=False,
-        )
-        response = await client.complete(request)
-        raw = response.content.strip()
 
         try:
-            parsed = json.loads(raw) if raw.startswith("{") else json.loads(raw[raw.index("{"):raw.rindex("}")+1])
-        except (json.JSONDecodeError, ValueError):
+            client = get_llm_client()
+            request = LLMRequest(
+                messages=messages,
+                model=context.model_name or "nvidia/llama-3.1-nemotron-ultra-253b-v1",
+                temperature=0.8,
+                max_tokens=4096,
+                stream=False,
+            )
+            response = await client.complete(request)
+            raw = response.content.strip()
+            
+            # 解析 JSON (兼容 markdown code block)
+            if raw.startswith("```"):
+                raw = raw.split("\n", 1)[1] if "\n" in raw else raw[3:]
+            if raw.endswith("```"):
+                raw = raw[:-3]
+            raw = raw.strip()
+
+            try:
+                parsed = json.loads(raw)
+            except json.JSONDecodeError:
+                # 尝试强制提取花括号内内容
+                start = raw.find("{")
+                end = raw.rfind("}") + 1
+                if start >= 0 and end > start:
+                    try:
+                        parsed = json.loads(raw[start:end])
+                    except json.JSONDecodeError:
+                        return AgentStep(type=AgentStepType.FINAL_ANSWER, content=raw, is_final=True, final_answer=raw)
+                else:
+                    return AgentStep(type=AgentStepType.FINAL_ANSWER, content=raw, is_final=True, final_answer=raw)
+
+            thought = parsed.get("thought", "")
+
+            if "final_answer" in parsed:
+                return AgentStep(type=AgentStepType.FINAL_ANSWER, content=thought, is_final=True, final_answer=parsed["final_answer"])
+
+            action = parsed.get("action", "")
+            action_input = parsed.get("action_input", {})
+            if action:
+                return AgentStep(type=AgentStepType.TOOL_CALL, content=thought, tool_name=action, tool_input=action_input)
+
             return AgentStep(type=AgentStepType.FINAL_ANSWER, content=raw, is_final=True, final_answer=raw)
-
-        thought = parsed.get("thought", "")
-
-        if "final_answer" in parsed:
-            return AgentStep(type=AgentStepType.FINAL_ANSWER, content=thought, is_final=True, final_answer=parsed["final_answer"])
-
-        action = parsed.get("action", "")
-        action_input = parsed.get("action_input", {})
-        if action:
-            return AgentStep(type=AgentStepType.TOOL_CALL, content=thought, tool_name=action, tool_input=action_input)
-
-        return AgentStep(type=AgentStepType.FINAL_ANSWER, content=raw, is_final=True, final_answer=raw)
+        except Exception as e:
+            return AgentStep(type=AgentStepType.FINAL_ANSWER, content=f"推理异常: {e}", is_final=True, final_answer=f"抱歉，遇到了一点大脑短路：{str(e)}")
 
     async def act(self, tool_name: str, tool_input: dict[str, Any], context: AgentContext) -> AgentStep:
         from ...tools.tool_registry import ToolRegistry
