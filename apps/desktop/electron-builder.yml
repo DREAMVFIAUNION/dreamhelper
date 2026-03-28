@@ -1,4 +1,4 @@
-appId: com.dreamvfia.dreamhelper
+﻿appId: com.dreamvfia.dreamhelper
 productName: 梦帮小助
 copyright: Copyright © 2025 DREAMVFIA UNION
 
@@ -57,4 +57,4 @@ linux:
 publish:
   provider: github
   owner: DREAMVFIAUNION
-  repo: dreamhelper-v3
+  repo: dreamhelper

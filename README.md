@@ -1,6 +1,15 @@
 <div align="center">
 
-# <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Smilies/Robot.png" alt="Robot" width="45" height="45" /> DreamHelper: Local-First AI Butler
+```text
+ ____                              _   _      _                 
+|  _ \ _ __ ___  __ _ _ __ ___    | | | | ___| |_ __   ___ _ __ 
+| | | | '__/ _ \/ _` | '_ ` _ \   | |_| |/ _ \ | '_ \ / _ \ '__|
+| |_| | | |  __/ (_| | | | | | |  |  _  |  __/ | |_) |  __/ |   
+|____/|_|  \___|\__,_|_| |_| |_|  |_| |_|\___|_| .__/ \___|_|   
+                                                  |_|             
+```
+
+# 🤖 DreamHelper: Local-First AI Butler
 
 <img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&weight=800&size=26&pause=1500&color=00FF88&center=true&vCenter=true&width=800&lines=DREAMVFIA+UNION+v4.0.0-alpha;The+Ultimate+Personal+AI+Butler;14+Professional+Agent+Matrix;Instinct+Continuous+Learning+System;RAG-for-Skills+%2B+MCP+Foundation" alt="Typing SVG" />
 
@@ -10,9 +19,9 @@
 
 <p align="center">
   <!-- Shields -->
-  <a href="https://github.com/DREAMVFIAUNION/dreamhelper-v3/stargazers"><img src="https://img.shields.io/github/stars/DREAMVFIAUNION/dreamhelper-v3?style=for-the-badge&color=00ff88" alt="Stars"></a>
-  <a href="https://github.com/DREAMVFIAUNION/dreamhelper-v3/network/members"><img src="https://img.shields.io/github/forks/DREAMVFIAUNION/dreamhelper-v3?style=for-the-badge&color=00ff88" alt="Forks"></a>
-  <a href="https://github.com/DREAMVFIAUNION/dreamhelper-v3/releases"><img src="https://img.shields.io/github/v/release/DREAMVFIAUNION/dreamhelper-v3?color=00ff88&label=release&style=for-the-badge" alt="Release"></a>
+  <a href="https://github.com/DREAMVFIAUNION/dreamhelper/stargazers"><img src="https://img.shields.io/github/stars/DREAMVFIAUNION/dreamhelper?style=for-the-badge&color=00ff88" alt="Stars"></a>
+  <a href="https://github.com/DREAMVFIAUNION/dreamhelper/network/members"><img src="https://img.shields.io/github/forks/DREAMVFIAUNION/dreamhelper?style=for-the-badge&color=00ff88" alt="Forks"></a>
+  <a href="https://github.com/DREAMVFIAUNION/dreamhelper/releases"><img src="https://img.shields.io/github/v/release/DREAMVFIAUNION/dreamhelper?color=00ff88&label=release&style=for-the-badge" alt="Release"></a>
   <img src="https://img.shields.io/badge/node-20.x-00ff88?style=for-the-badge" alt="Node">
   <img src="https://img.shields.io/badge/python-3.12-00ff88?style=for-the-badge" alt="Python">
 </p>
@@ -21,7 +30,7 @@
 
 ---
 
-## <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Objects/Sparkles.png" alt="Sparkles" width="25" height="25" /> What's New in v4.0.0-alpha
+## ✨ What's New in v4.0.0-alpha
 
 <details open>
 <summary><b>🎩 14-Agent Professional Matrix & Personal Butler</b></summary>
@@ -125,8 +134,8 @@ Repo helpers:
 ### 1) Clone
 
 ```bash
-git clone https://github.com/DREAMVFIAUNION/dreamhelper-v3.git
-cd dreamhelper-v3
+git clone https://github.com/DREAMVFIAUNION/dreamhelper.git
+cd dreamhelper
 ```
 
 ### 2) Install workspace dependencies
@@ -293,9 +302,9 @@ flowchart LR
 ## Project links
 
 - GitHub org: [DREAMVFIAUNION](https://github.com/DREAMVFIAUNION)
-- Repository: [dreamhelper-v3](https://github.com/DREAMVFIAUNION/dreamhelper-v3)
-- Releases: [GitHub Releases](https://github.com/DREAMVFIAUNION/dreamhelper-v3/releases)
-- Discussions: [GitHub Discussions](https://github.com/DREAMVFIAUNION/dreamhelper-v3/discussions)
+- Repository: [dreamhelper](https://github.com/DREAMVFIAUNION/dreamhelper)
+- Releases: [GitHub Releases](https://github.com/DREAMVFIAUNION/dreamhelper/releases)
+- Discussions: [GitHub Discussions](https://github.com/DREAMVFIAUNION/dreamhelper/discussions)
 
 ---
 
