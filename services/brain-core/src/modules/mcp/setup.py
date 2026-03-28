@@ -47,6 +47,13 @@ async def initialize_mcp():
     total_tools = sum(s["tools_count"] for s in servers if s["connected"])
     print(f"  ✓ MCP: {connected}/{len(enabled)} 服务器已连接, {total_tools} 个工具")
     bridge_mcp_to_tools()
+    
+    # 动态将刚桥接进来的外源 MCP 工具全部向量化到 RAG 检索池中
+    from ..tools.skills.skill_engine import SkillEngine
+    try:
+        await SkillEngine.vectorize_all_skills()
+    except Exception as e:
+        logger.error(f"MCP 工具动态向量化失败: {e}")
 
 
 async def shutdown_mcp():

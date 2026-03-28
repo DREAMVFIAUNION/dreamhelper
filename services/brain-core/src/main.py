@@ -27,6 +27,7 @@ from .modules.dual_brain.router import router as brain_router
 from .modules.mcp.mcp_router import router as mcp_router
 from .modules.consciousness.router import router as consciousness_router
 from .modules.code_intel.router import router as code_intel_router
+from .modules.learning.router import router as learning_router
 from .common.config import settings
 from .common.security_middleware import SecurityHeadersMiddleware
 from .common.api_auth import APIAuthMiddleware
@@ -196,6 +197,7 @@ app.include_router(brain_router, prefix="/api/v1")
 app.include_router(mcp_router, prefix="/api/v1")
 app.include_router(consciousness_router, prefix="/api/v1")
 app.include_router(code_intel_router, prefix="/api/v1")
+app.include_router(learning_router, prefix="/api/v1")
 
 
 @app.get("/health")

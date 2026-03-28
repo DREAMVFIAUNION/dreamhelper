@@ -13,6 +13,14 @@ from .implementations.plan_execute_agent import PlanExecuteAgent
 from .implementations.browser_agent import BrowserAgent
 from .implementations.dynamic_agent import DynamicAgent
 from .implementations.coding_agent import CodingAgent
+# v4.0 专业 Agent 矩阵
+from .implementations.chief_of_staff_agent import ChiefOfStaffAgent
+from .implementations.tdd_agent import TDDAgent
+from .implementations.code_review_agent import CodeReviewAgent
+from .implementations.security_agent import SecurityAgent
+from .implementations.architect_agent import ArchitectAgent
+from .implementations.refactor_agent import RefactorAgent
+from .implementations.doc_agent import DocAgent
 from ..llm.llm_client import get_llm_client
 from ..llm.types import LLMRequest
 
@@ -36,6 +44,14 @@ def _init_builtin_agents():
         "analysis_agent": AnalysisAgent(),
         "plan_execute_agent": PlanExecuteAgent(),
         "browser_agent": BrowserAgent(),
+        # v4.0 专业 Agent 矩阵
+        "chief_of_staff_agent": ChiefOfStaffAgent(),
+        "tdd_agent": TDDAgent(),
+        "code_review_agent": CodeReviewAgent(),
+        "security_agent": SecurityAgent(),
+        "architect_agent": ArchitectAgent(),
+        "refactor_agent": RefactorAgent(),
+        "doc_agent": DocAgent(),
     }
 
 
@@ -166,6 +182,36 @@ KEYWORD_ROUTES: list[tuple[list[str], str]] = [
     (["打开网页", "截图", "screenshot", "网页截图", "抓取网页", "爬取",
       "浏览器", "访问网站", "提取网页", "网页内容"],
      "browser_agent"),
+    # v4.0 专业 Agent 路由
+    # TDD Agent
+    (["tdd", "测试驱动", "先写测试", "red green refactor", "测试覆盖率",
+      "单元测试", "集成测试", "测试用例"],
+     "tdd_agent"),
+    # Code Review Agent
+    (["代码审查", "code review", "review", "审查代码", "代码质量",
+      "代码规范", "lint", "代码检查"],
+     "code_review_agent"),
+    # Security Agent
+    (["安全审计", "漏洞扫描", "security", "owasp", "安全检查",
+      "xss", "sql注入", "渗透测试", "安全漏洞"],
+     "security_agent"),
+    # Architect Agent
+    (["架构设计", "系统设计", "技术选型", "architecture", "系统架构",
+      "微服务", "领域驱动", "ddd", "设计模式"],
+     "architect_agent"),
+    # Refactor Agent
+    (["重构", "refactor", "代码清理", "死代码", "代码优化",
+      "坏味道", "code smell", "解耦"],
+     "refactor_agent"),
+    # Doc Agent
+    (["写文档", "生成文档", "api文档", "readme", "变更日志",
+      "changelog", "documentation", "使用手册"],
+     "doc_agent"),
+    # Chief of Staff / 管家 Agent
+    (["管家", "日程", "安排", "今天做什么", "帮我整理", "待办事项",
+      "每日概览", "今日概览", "心情", "提醒我", "别忘了",
+      "早上好", "晚安", "生活", "习惯", "关心"],
+     "chief_of_staff_agent"),
 ]
 
 

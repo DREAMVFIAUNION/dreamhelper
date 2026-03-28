@@ -1,111 +1,80 @@
-"""MCP Tool Bridge — 将 MCP Server 的工具桥接到 ToolRegistry
+"""MCP Tool Bridge — 将 MCP Server 的工具桥接到 SkillEngine
 
-采用单调度器模式: 注册一个 `mcp_call` 元工具到 ToolRegistry，
-LLM 通过 mcp_call(server, tool, params) 调用任意 MCP 工具。
-避免工具列表爆炸，与 run_skill 模式一致。
+完全原生扁平化集成：将连接的所有 MCP Server 内的外部工具，
+逐一动态实例化为 MCPDynamicSkill，并直接注入到系统的 SkillEngine 中。
+它们将被统一向量化计算，Agent 调用时跟本地 Python 技能体验完全一致。
 """
 
 from typing import Any
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict
 
-from ..tools.tool_registry import BaseTool, ToolRegistry
+from ..tools.skills.skill_engine import BaseSkill, SkillEngine
 from .mcp_client_manager import MCPClientManager
 
 
-class MCPCallArgs(BaseModel):
-    server: str = Field(description="MCP 服务器名称，如 sequential-thinking, filesystem, memory-graph, windows, github, modelscope")
-    tool: str = Field(description="工具名称，由对应 MCP 服务器提供")
-    params: dict = Field(default={}, description="工具参数 (JSON 对象)")
+class GenericMCPArgs(BaseModel):
+    """允许接受任何多余参数的泛型模型，具体校验由远端 MCP Server 负责。"""
+    model_config = ConfigDict(extra="allow")
 
 
-class MCPDispatchTool(BaseTool):
-    """MCP 调度工具 — 转发调用到 MCP Server"""
+class MCPDynamicSkill(BaseSkill):
+    """MCP 动态技能适配器 — 桥接远端 MCP 工具到本地 SkillEngine"""
 
-    name = "mcp_call"
-    args_schema = MCPCallArgs
+    def __init__(self, server_name: str, tool_name: str, description: str, json_schema: dict):
+        # 构造扁平化名称，防止重名，例如 mcp_filesystem_read_file
+        safe_server = server_name.replace("-", "_")
+        safe_tool = tool_name.replace("-", "_")
+        self.name = f"mcp_{safe_server}_{safe_tool}"
+        self.description = description
+        self.category = "mcp_plugin"
+        self.args_schema = GenericMCPArgs
+        self.version = "1.0.0"
+        self.tags = ["mcp", server_name, tool_name]
+        
+        self._server_name = server_name
+        self._tool_name = tool_name
+        self._json_schema = json_schema
 
-    def __init__(self):
-        self.description = self._build_description()
-
-    def _build_description(self) -> str:
-        servers = MCPClientManager.list_servers()
-        connected = [s for s in servers if s["connected"]]
-        if not connected:
-            return "调用 MCP 外接工具服务 (暂无已连接的服务器)"
-
-        lines = [f"调用 MCP 外接工具服务。已连接 {len(connected)} 个服务器:"]
-        for s in connected:
-            tools_str = ", ".join(s["tools"]) if s["tools"] else "(无工具)"
-            lines.append(f"  [{s['name']}]: {s['description']} — 工具: {tools_str}")
-        lines.append("传入 server + tool + params 调用。不确定参数时可只传 server 和 tool 查看帮助。")
-        lines.append("⚠️ 安全提示: windows/Shell 工具可执行系统命令，禁止执行破坏性操作 (如 rm -rf、format、del /s、注册表删除、Stop-Service 等)。")
-        return "\n".join(lines)
-
-    def refresh_description(self):
-        """刷新描述（当 MCP 连接状态变化后调用）"""
-        self.description = self._build_description()
+    def to_schema(self) -> dict:
+        """重写 to_schema，直接返回 MCP Server 提供的精确原生 JSON Schema，让 LLM 获得正确提示"""
+        return {
+            "name": self.name,
+            "description": self.description,
+            "category": self.category,
+            "version": self.version,
+            "tags": self.tags,
+            "parameters": self._json_schema,
+        }
 
     async def execute(self, **kwargs: Any) -> str:
-        server = kwargs.get("server", "").strip()
-        tool = kwargs.get("tool", "").strip()
-        params = kwargs.get("params", {})
-
-        # 无参数: 列出所有可用服务器和工具
-        if not server:
-            return self._list_all()
-
-        # 有 server 无 tool: 列出该服务器的工具
-        if not tool:
-            return self._list_server_tools(server)
-
-        # 解析 params
-        if isinstance(params, str):
-            import json
-            try:
-                params = json.loads(params)
-            except json.JSONDecodeError:
-                return f"params 不是合法 JSON: {params}"
-
-        # 调用 MCP 工具
-        return await MCPClientManager.call_tool(server, tool, params)
-
-    def _list_all(self) -> str:
-        servers = MCPClientManager.list_servers()
-        if not servers:
-            return "暂无已注册的 MCP 服务器。"
-        lines = ["已注册的 MCP 服务器:"]
-        for s in servers:
-            status = "✓ 已连接" if s["connected"] else f"✗ 未连接({s['error'][:50]})"
-            tools_str = ", ".join(s["tools"]) if s["tools"] else "-"
-            lines.append(f"\n[{s['name']}] {status}")
-            lines.append(f"  描述: {s['description']}")
-            lines.append(f"  工具: {tools_str}")
-        return "\n".join(lines)
-
-    def _list_server_tools(self, server: str) -> str:
-        conn = MCPClientManager.get_connection(server)
-        if not conn:
-            available = [s["name"] for s in MCPClientManager.list_servers()]
-            return f"服务器 '{server}' 不存在。可用: {available}"
-        if not conn.connected:
-            return f"服务器 '{server}' 未连接: {conn.error}"
-        if not conn.tools:
-            return f"服务器 '{server}' 已连接但无可用工具。"
-        lines = [f"[{server}] 可用工具:"]
-        for t in conn.tools:
-            lines.append(f"  - {t['name']}: {t['description']}")
-        return "\n".join(lines)
+        """直接透传 kwargs 参数到底层 MCP Client Manager 执行"""
+        return await MCPClientManager.call_tool(self._server_name, self._tool_name, kwargs)
 
 
 def bridge_mcp_to_tools():
-    """注册 mcp_call 调度工具到 ToolRegistry"""
-    if "mcp_call" in ToolRegistry._tools:
-        # 已注册则刷新描述
-        tool = ToolRegistry._tools["mcp_call"]
-        if hasattr(tool, "refresh_description"):
-            tool.refresh_description()
-        return
+    """将已连接的 MCP Server 中的所有工具实例化为 MCPDynamicSkill 并注册到 SkillEngine"""
+    for server in MCPClientManager.list_servers():
+        if not server["connected"]:
+            continue
+            
+        server_name = server["name"]
+        conn = MCPClientManager.get_connection(server_name)
+        if not conn or not conn.tools:
+            continue
+            
+        for t in conn.tools:
+            # 兼容空描述
+            desc = t.get("description", "")
+            if not desc:
+                desc = f"Invoke {t['name']} from MCP server {server_name}"
+                
+            skill = MCPDynamicSkill(
+                server_name=server_name,
+                tool_name=t["name"],
+                description=desc,
+                json_schema=t.get("input_schema", {})
+            )
+            SkillEngine.register(skill)
 
-    ToolRegistry.register(MCPDispatchTool())
     total_tools = sum(len(s["tools"]) for s in MCPClientManager.list_servers() if s["connected"])
-    print(f"  ✓ MCP bridge registered: mcp_call → {total_tools} external tools")
+    print(f"  ✓ MCP bridge registered: {total_tools} external tools flattened into SkillEngine")

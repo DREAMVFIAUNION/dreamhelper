@@ -90,27 +90,33 @@ class SkillEngine:
         return cats
 
     @classmethod
-    async def vectorize_all_skills(cls):
-        """预计算并缓存所有技能的 Embedding。
-        此过程应在启动后异步执行一次。
-        """
-        if cls._is_vectorized or not cls._skills:
+    async def vectorize_all_skills(cls, force: bool = False):
+        """预计算并缓存所有技能的 Embedding。支持增量更新。"""
+        if not cls._skills:
             return
 
         embedder = BatchEmbedder()
-        names = list(cls._skills.keys())
+        to_vectorize = []
+        for name, s in cls._skills.items():
+            if force or name not in cls._embeddings:
+                to_vectorize.append(s)
+                
+        if not to_vectorize:
+            cls._is_vectorized = True
+            return
+
         texts = [
             f"技能名称: {s.name}。分类: {s.category}。功能描述: {s.description}。标签: {','.join(s.tags)}"
-            for s in cls._skills.values()
+            for s in to_vectorize
         ]
         
         try:
-            logging.getLogger(__name__).info("开始为 %d 个技能计算语义向量...", len(texts))
+            logging.getLogger(__name__).info("开始为 %d 个(新增)技能计算语义向量...", len(texts))
             embeddings = await embedder.embed(texts)
-            for idx, name in enumerate(names):
-                cls._embeddings[name] = embeddings[idx]
+            for idx, s in enumerate(to_vectorize):
+                cls._embeddings[s.name] = embeddings[idx]
             cls._is_vectorized = True
-            logging.getLogger(__name__).info("✓ %d 技能向量化完成。", len(texts))
+            logging.getLogger(__name__).info("✓ %d 个新增技能向量化完毕 (总聚合: %d)", len(texts), len(cls._embeddings))
         except Exception as e:
             logging.getLogger(__name__).error("技能向量化失败 (降级为字符匹配): %s", e)
 
